@@ -2,7 +2,7 @@ const axios = require('axios');
 const { Api, JsonRpc, RpcError } = require('eosjs');
 const fetch = require('node-fetch');
 const { TextEncoder, TextDecoder } = require('util');
-const { RPC_ENDPOINT, SIGNING_CAPTCHA_KEY, SIGNING_PAGE_URL } = require('../constants');
+const { RPC_ENDPOINT, SIGNING_CAPTCHA_KEY, SIGNING_PAGE_URL } = require('../../constants');
 
 class TransactService {
   sessionStore;
@@ -79,14 +79,14 @@ class ApiSigner {
 
   loginService;
   sessionStore;
-  twoCaptchaService;
+  captchaSolver;
 
 
-  constructor(accountName, loginService, sessionStore, twoCaptchaService) {
+  constructor(accountName, loginService, sessionStore, captchaSolver) {
     this.accountName = accountName;
     this.loginService = loginService;
     this.sessionStore = sessionStore;
-    this.twoCaptchaService = twoCaptchaService;
+    this.captchaSolver = captchaSolver;
   }
 
   async getAvailableKeys() {
@@ -94,9 +94,12 @@ class ApiSigner {
     return authorizedAccount.publicKeys;
   }
 
+  // PUB_K1_67igiRXfkKcpSRvQFCrevgGKGKzLJwcSrcZ8DwFwjo3FJ9nFno
+  // PVT_K1_2UTR68aKPu2BpPZ2N9skohtJE39GsBT6kvjNbkeksvRhWtoMfH
+
   async sign(data) {
     const sessionToken = this.sessionStore.retrieve(this.accountName);
-    const captcha = await this.twoCaptchaService.solveCaptcha(SIGNING_CAPTCHA_KEY, SIGNING_PAGE_URL);
+    const captcha = await this.captchaSolver.solveCaptcha(SIGNING_CAPTCHA_KEY, SIGNING_PAGE_URL);
     const { data: response } = await axios.post('https://public-wax-on.wax.io/wam/sign', {
       'g-recaptcha-response': captcha,
       serializedTransaction: Object.values(data.serializedTransaction),

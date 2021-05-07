@@ -3,13 +3,11 @@ const path = require('path');
 
 class SessionStore {
   filePath;
-
   data = {};
 
   constructor(filePath = path.resolve('.', 'store/sessions.json')) {
     this.filePath = filePath;
     this.readOrCreateStoreFile();
-
   }
 
   readOrCreateStoreFile() {

@@ -4,13 +4,18 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "atomicassets": "^1.2.2",
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "eosjs": "^21.0.3",
     "express": "^4.17.1",
+    "int64-buffer": "^1.0.0",
+    "js-logger": "^1.6.1",
     "node-fetch": "^2.6.1",
     "puppeteer": "^8.0.0",
-    "steam-totp": "^2.1.1"
+    "steam-totp": "^2.1.1",
+    "text-encoding": "^0.7.0",
+    "node-worker-threads-pool": "^1.4.3"
   },
   "devDependencies": {
     "@types/text-encoding": "^0.0.35"

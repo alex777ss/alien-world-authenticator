@@ -31,6 +31,9 @@ class LoginService {
     const page = await browser.newPage();
     await loginCheckingPage.goto('https://all-access.wax.io')
     await page.goto('https://all-access.wax.io');
+    await page.evaluate((accountName) => {
+      document.querySelector('title').text = accountName;
+    }, accountName)
     const sessionToken = await loginCheckingPage.evaluate(async () => {
       return await new Promise(resolve => {
         const checkInterval = setInterval(async () => {
