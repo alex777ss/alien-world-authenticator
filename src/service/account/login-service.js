@@ -4,10 +4,12 @@ const puppeteer = require('puppeteer');
 const allAccessWaxUrl = 'https://all-access.wax.io';
 
 class LoginService {
+  waxApi = null;
   sessionStore = null;
   accountsInfo = {};
 
-  constructor(sessionStore) {
+  constructor(waxApi, sessionStore) {
+    this.waxApi = waxApi;
     this.sessionStore = sessionStore;
   }
 
@@ -55,12 +57,13 @@ class LoginService {
     if (!sessionToken) {
       throw new Error('No session_token in storage for ' + accountName);
     }
-    const { data } = await axios.get(`https://public-wax-on.wax.io/wam/users`, {
+    return await this.waxApi.request({
+      method: 'GET',
+      url: 'https://public-wax-on.wax.io/wam/users',
       headers: {
         'x-access-token': sessionToken
       }
     });
-    return data;
   }
 }
 
